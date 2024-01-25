@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>Website of Tolga Sümer</title>
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<link rel="stylesheet" href="fontawesome/css/all.min.css">
+	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+	<style>
+		body {
+			font-family: 'Open Sans', sans-serif;
+		}
+		div#right {
+			filter: grayscale(1);
+			-webkit-filter: grayscale(1);
+			transition: all 0.2s linear;
+			-webkit-transition: all 0.2s linear;
+			text-align: center;
+		}
+		div#right:hover {
+			filter: none;
+			-webkit-filter: grayscale(0);
+		}
+		.fab, .fas {
+			font-size: 36px;
+		}
+		div.icons {
+			margin-top: 20px;
+		}
+		div.icons div.columns {
+			text-align: center;
+		}
+		div.icons a.icon {
+			text-decoration: none;
+			color: black;
+		}
+		div.icons a.icon:hover {
+			color: #0FA0CE;
+		}
+		a.tab {
+			font-weight: bold;
+			text-decoration: none;
+			color: #222;
+		}
+		span.tab-icon {
+			font-family:'Courier New', Courier, monospace;
+			color: #0FA0CE;
+		}
+		ul.section {
+			padding-left: 10px;
+		}
+	</style>
+</head>
+<body>
+	<script>
+		// Toggles a section that is related to the given `a` element.
+		function toggleSection(toggler) {
+			let id = $(toggler).attr("href");
+			let cnt = $(id);
+			cnt.toggle();
+			if(cnt.is(":visible")) {
+				$(toggler).find(".tab-icon").html("[-]");
+			} else {
+				$(toggler).find(".tab-icon").html("[+]");
+			}
+		}
+
+		$(function() {
+			$("a.tab").click(function() {
+				toggleSection(this);
+			});
+			toggleSection($("a.tab[href='#education']"));
+			// Close all the sections if JS is enabled.
+			//$("a.tab").each(function(_, x) {
+			//	toggleSection(x);
+			//})
+		})
+		
+	</script>
+	<div class="container">
+		<div class="row" style="margin-top:100px">
+			<div id="left" class="nine columns">
+				<h3>Tolga Sümer</h3>
+				<p>MSc Data Science and Business Analytics student at <a href="https://www.bbs.unibo.eu/master-fulltime/master-in-data-science-2/#gref" target="_blank">BBS</a>.</p>
+				<p>
+					Currently, I'm fully engaged in the tech world, juggling roles as a full-stack mobile software engineer while delving into the depths of Data Science and Business Analytics through my master's program in lively Bologna. Looking ahead, I'm excited about the prospect of diving into AI/ML projects as part of my future endeavors.
+					You can reach me through <a href="mailto:tolgasumer1905@gmail.com">my e-mail</a>.
+				</p>
+				<h5>
+					<a class="tab" href="#education">
+						<span class="tab-icon">[-]</span> Education
+					</a>		
+				</h5>
+				<ul class="section" id="education">
+					<li>
+						<b>BBS</b>
+						<br />MSc in Data Science and Business Analytics
+					</li>
+					<li>
+						<b>Koç University</b>
+						<br />BSc in Computer Engineering
+					</li>
+				</ul>	
+				<h5>
+					<a class="tab" href="#current-projects">
+						<span class="tab-icon">[-]</span> Current Projects
+					</a>
+				</h5>
+				<ul class="section" id="current-projects">
+					<li>
+						<b>Cryptocurrency Manipulation Detection</b>
+						<br /> Our aim is to detect manipulation attempts on select cryptocurrencies through social media analysis. We use sentiment analysis to make predictions.
+					</li>
+				</ul>
+				<h5>
+					<a class="tab" href="#work-experience">
+						<span class="tab-icon">[-]</span> Work Experience
+					</a>
+				</h5>
+				<ul class="section" id="work-experience">
+					<b><a href="https://www.ykteknoloji.com.tr/en/" target="_blank">Yapı Kredi Teknoloji</a></b>
+
+					<li>
+						<b>Data Warehouse Engineer Intern (06/2019 – 07/2019)</b>
+						<br />Assisted in the design and development of data warehouse solutions to support business intelligence and reporting needs.
+						<br />Participated in the ETL process, ensuring efficient data extraction from source systems and loading into the data warehouse.
+						<br />Gained hands-on experience with data warehousing tools and technologies such as SQL Server, Oracle, or other relevant platforms.
+					</li>
+
+					<li>
+						<b>Mobile Software Engineer Intern (07/2020 – 08/2020 & 09/2020 – 02/2021)</b>
+						<br />Collaborated with the development team to design and implement features for mobile applications, focusing on both Android and iOS platforms.
+						<br />Gained hands-on experience with mobile app development frameworks and tools such as Android Studio and Xcode.
+						<br />Gained familiarity with version control systems to manage codebase changes and collaborate effectively with the development team.
+					</li>
+					
+					<li>
+						<b>Junior Mobile Software Engineer (07/2021 – 08/2022)</b>
+						<br />Developed and maintained mobile applications for Android and iOS platforms, actively contributing to the entire software development lifecycle.
+						<br />Collaborated with cross-functional teams, including UX/UI designers and product managers, to translate requirements into robust and user-friendly mobile solutions.
+					</li>
+
+					<li>
+						<b>Mobile Software Engineer (08/2022 – 08/2023)</b>
+						<br />Optimized mobile application performance, addressing bottlenecks and implementing efficiency improvements for a smoother user experience.
+						<br />Integrated third-party APIs and libraries to extend the functionality of mobile applications and stay current with industry trends.
+					</li>
+
+					<li>
+						<b>Expert Mobile Software Engineer (08/2023 – Present)</b>
+						<br />Led the end-to-end development of complex and scalable mobile applications for Android and iOS platforms, demonstrating expertise in both native and cross-platform frameworks.
+						<br />Mentored and provided technical guidance to junior engineers, fostering a culture of continuous learning and knowledge sharing within the mobile development team.
+						<br />Spearheaded the adoption of cutting-edge tools, frameworks, and methodologies to optimize the mobile development process and enhance overall efficiency.
+					</li>
+					
+				</ul>
+			</div>
+			<div id="right" class="three columns">
+				<img src="./images/photo.png" id="head" alt="My photo" style="width:100%">
+				<div class="row icons">
+					<div class="four columns">
+						<a class="icon" href="www.linkedin.com/in/tolga-sümer" target="_blank">
+							<i class="fab fa-linkedin-in"></i>
+						</a>
+					</div>
+					<div class="four columns">
+						<a class="icon" href="https://github.com/Tolgino" target="_blank">
+							<i class="fab fa-github"></i>
+						</a>
+					</div>
+
+					<div class="four columns">
+						<a class="icon" href="mailto:tolgasumer1905@gmail.com">
+							<i class="far fa-envelope" style="font-size: 36px;"></i>
+						</a>
+					</div>
+				</div>
+				<hr>
+				Last updated 25 January 2024.
+				<img src="">
+			</div>
+		</div>
+	</div>
+
+</body>
+</html>
