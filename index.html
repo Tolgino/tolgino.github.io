@@ -126,7 +126,7 @@
 		}
 		@media (max-width: 600px) {
 			.container { padding: 0 16px; }
-			.navbar-inner { height: 56px; }
+			.navbar-inner { height: 64px; }
 			/* Keep background solid; section :before handles alternation */
 			body { background: var(--bg); }
 			.hero h1 { font-size: 28px; }
@@ -350,7 +350,23 @@
 	</div>
 	</footer>
 
+	<button id="scrollTopBtn" aria-label="Scroll to top" style="display:none;position:fixed;right:24px;bottom:32px;z-index:999;background:linear-gradient(90deg, var(--brand), var(--brand-2));color:#0b0d12;border:none;border-radius:50%;width:48px;height:48px;box-shadow:0 4px 16px rgba(0,0,0,0.18);font-size:22px;cursor:pointer;transition:opacity 0.2s;align-items:center;justify-content:center;"><i class="fas fa-arrow-up"></i></button>
+
 	<script>
+		// Scroll to top button
+		var scrollBtn = document.getElementById('scrollTopBtn');
+		window.addEventListener('scroll', function(){
+			if(window.scrollY > 200){
+				scrollBtn.style.display = 'flex';
+				scrollBtn.style.opacity = '1';
+			}else{
+				scrollBtn.style.opacity = '0';
+				setTimeout(function(){ scrollBtn.style.display = 'none'; }, 200);
+			}
+		});
+		scrollBtn.addEventListener('click', function(){
+			window.scrollTo({ top: 0, behavior: 'smooth' });
+		});
 		// Smooth scroll
 		document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
 			anchor.addEventListener('click', function(e){
