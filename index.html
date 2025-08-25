@@ -2,210 +2,591 @@
 <html lang="en">
 <head>
 	<meta charset="utf-8">
-	<title>Website of Tolga Sümer</title>
-	<meta name="description" content="">
-	<meta name="author" content="">
-
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/skeleton/2.0.4/skeleton.min.css" integrity="sha512-EZLkOqwILORob+p0BXZc+Vm3RgJBOe1Iq/0fiI7r/wJgzOFZMlsqTa29UEl6v6U6gsV4uIpsNZoV32YZqrCRCQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+	<meta name="theme-color" content="#0b0d12">
+	<title>Tolga Sümer — Software & Data</title>
+	<meta name="description" content="Tolga Sümer — Software Engineer. Portfolio, experience, projects, and contact.">
+	<meta name="author" content="Tolga Sümer">
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="fontawesome/css/all.min.css">
-	<script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
 	<style>
+		:root {
+			--bg: #0b0d12;
+			--panel: #111521;
+			--muted: #a3b0c2;
+			--text: #e8edf5;
+			--brand: #6ae3ff;
+			--brand-2: #7c5cff;
+			--accent: #23d3ac;
+			--card: #0f1320;
+			--border: rgba(255,255,255,0.08);
+		}
+		* { box-sizing: border-box; }
+		html, body { height: 100%; }
 		body {
-			font-family: 'Open Sans', sans-serif;
+			margin: 0;
+			font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+			background: radial-gradient(1200px 1200px at 80% -10%, rgba(124,92,255,0.25), transparent 60%),
+				radial-gradient(900px 900px at -10% 20%, rgba(106,227,255,0.25), transparent 60%),
+				var(--bg);
+			color: var(--text);
+			line-height: 1.6;
+			overflow-x: hidden;
 		}
-		div#right {
-			filter: grayscale(1);
-			-webkit-filter: grayscale(1);
-			transition: all 0.2s linear;
-			-webkit-transition: all 0.2s linear;
-			text-align: center;
+		a { color: var(--brand); text-decoration: none; }
+		a:hover { color: var(--brand-2); }
+		.container { width: 100%; max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+		.navbar {
+			position: sticky; top: 0; z-index: 99;
+			backdrop-filter: saturate(160%) blur(12px);
+			background: rgba(11,13,18,0.6);
+			border-bottom: 1px solid var(--border);
 		}
-		div#right:hover {
-			filter: none;
-			-webkit-filter: grayscale(0);
+		.navbar-inner { display: flex; align-items: center; justify-content: space-between; height: 64px; position: relative; }
+		.brand { font-weight: 800; letter-spacing: 0.5px; }
+		.brand span { color: var(--brand-2); }
+		.nav a { margin-left: 18px; color: var(--muted); font-weight: 600; }
+		.nav a:hover { color: var(--text); }
+		.theme-toggle { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 8px 12px; border-radius: 10px; cursor: pointer; }
+		.menu-toggle { display: none; background: transparent; border: 1px solid var(--border); color: var(--text); padding: 8px 12px; border-radius: 10px; cursor: pointer; align-items: center; gap: 8px; }
+		.lang { display: inline-flex; gap: 8px; align-items: center; margin-left: 18px; }
+		.lang button { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: 8px 12px; border-radius: 12px; cursor: pointer; font-weight: 700; }
+		.lang button.active { color: #0b0d12; background: linear-gradient(90deg, var(--brand), var(--brand-2)); border: 0; }
+		.brand small { display: block; font-weight: 600; color: var(--muted); letter-spacing: 0; margin-top: 2px; }
+		.brand small .prefix { color: var(--muted); }
+		.brand small .typing-word { color: var(--text); border-right: 2px solid var(--brand-2); padding-right: 2px; animation: caret 1s step-end infinite; }
+		@keyframes caret { 50% { border-color: transparent; } }
+
+		/* Hero */
+		.hero { padding: 88px 0 56px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 40px; align-items: center; }
+		.hero h1 { font-size: 44px; line-height: 1.15; margin: 0 0 8px; }
+		.hero h1 .hi { background: linear-gradient(90deg, var(--brand), var(--brand-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+		.hero p { margin: 0 0 20px; color: var(--muted); }
+		.badges { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 26px; }
+		.badge { background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); padding: 8px 12px; border: 1px solid var(--border); border-radius: 12px; color: var(--muted); font-weight: 600; font-size: 13px; }
+		.cta { display: flex; gap: 12px; }
+		.button { display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; font-weight: 700; border: 1px solid var(--border); color: var(--text); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); }
+		.button.primary { background: linear-gradient(90deg, var(--brand), var(--brand-2)); color: #0b0d12; border: 0; }
+		.button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,0.25); }
+		.headshot { width: 100%; border-radius: 20px; border: 1px solid var(--border); filter: grayscale(10%); box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
+
+		/* Sections */
+		.section { padding: 44px 0; position: relative; z-index: 0; }
+		.section:before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: var(--bg); }
+		.section.alt { box-shadow: inset 0 1px 0 var(--border), inset 0 -1px 0 var(--border); }
+		.section.alt:before { background: #0f1320; }
+		.section h2 { margin: 0 0 18px; font-size: 26px; letter-spacing: 0.3px; }
+		.cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+		.card {
+			grid-column: span 12;
+			background: var(--card);
+			border: 1px solid var(--border);
+			border-radius: 16px; padding: 18px;
+			transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
 		}
-		.fab, .fas {
-			font-size: 36px;
+		.card:hover { transform: translateY(-2px); border-color: rgba(124,92,255,0.45); box-shadow: 0 14px 40px rgba(16,19,32,0.6); }
+		.card .meta { color: var(--muted); font-size: 13px; margin-bottom: 8px; display: flex; align-items: center; gap: 8px; }
+		.card h3 { margin: 0 0 8px; font-size: 18px; }
+		.card p { margin: 0; color: var(--muted); }
+		.row { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+		.col-6 { grid-column: span 6; }
+		.col-4 { grid-column: span 4; }
+		.col-8 { grid-column: span 8; }
+		.col-12 { grid-column: span 12; }
+
+		/* Timeline bullets */
+		.timeline { position: relative; padding-left: 22px; }
+		.timeline:before { content: ""; position: absolute; left: 7px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--brand), transparent); }
+		.timeline .dot { position: absolute; left: 0; width: 14px; height: 14px; border-radius: 50%; background: var(--brand-2); border: 2px solid #0b0d12; box-shadow: 0 0 0 3px rgba(124,92,255,0.25); padding-left: 8px; }
+
+		/* Footer */
+		.footer { padding: 28px 0; border-top: 1px solid var(--border); color: var(--muted); text-align: center; }
+
+		/* Responsive */
+		@media (max-width: 900px) {
+			/* Keep global background simple and let sections own their backgrounds */
+			body { background: var(--bg); }
+			.menu-toggle { display: inline-flex; }
+			.nav { position: absolute; top: 64px; left: 0; right: 0; background: rgba(11,13,18,0.98); border-bottom: 1px solid var(--border); display: none; flex-direction: column; padding: 12px 20px; }
+			.nav.open { display: flex; }
+			.nav a { margin: 10px 0; font-size: 16px; }
+			.lang { margin: 12px 0 0 0; }
+			.hero { grid-template-columns: 1fr; padding: 48px 0 32px; }
+			.section.alt { background: linear-gradient(180deg, rgba(124,92,255,0.08), rgba(124,92,255,0.03)); }
+			/* Add some offset to top text for breathing room under navbar */
+			.hero > div:first-child { margin-top: 10px; }
+			.hero h1 { font-size: 34px; }
+			.badges { overflow-x: auto; padding-bottom: 6px; }
+			.col-6 { grid-column: span 12; }
+			.col-4 { grid-column: span 12; }
+			.col-8 { grid-column: span 12; }
+			.cta { flex-direction: column; }
+			.cta .button { width: 100%; justify-content: center; }
+			.headshot { max-width: 380px; margin: 12px auto 0; display: block; }
 		}
-		div.icons {
-			margin-top: 20px;
-		}
-		div.icons div.columns {
-			text-align: center;
-		}
-		div.icons a.icon {
-			text-decoration: none;
-			color: black;
-		}
-		div.icons a.icon:hover {
-			color: #0FA0CE;
-		}
-		a.tab {
-			font-weight: bold;
-			text-decoration: none;
-			color: #222;
-		}
-		span.tab-icon {
-			font-family:'Courier New', Courier, monospace;
-			color: #0FA0CE;
-		}
-		ul.section {
-			padding-left: 10px;
+		@media (max-width: 600px) {
+			.container { padding: 0 16px; }
+			.navbar-inner { height: 56px; }
+			/* Keep background solid; section :before handles alternation */
+			body { background: var(--bg); }
+			.hero h1 { font-size: 28px; }
+			.section.alt { background: linear-gradient(180deg, rgba(124,92,255,0.1), rgba(124,92,255,0.04)); }
+			.hero > div:first-child { margin-top: 14px; }
+			.badge { font-size: 12px; padding: 7px 10px; }
 		}
 	</style>
 </head>
 <body>
-	<script>
-		// Toggles a section that is related to the given `a` element.
-		function toggleSection(toggler) {
-			let id = $(toggler).attr("href");
-			let cnt = $(id);
-			cnt.toggle();
-			if(cnt.is(":visible")) {
-				$(toggler).find(".tab-icon").html("[-]");
-			} else {
-				$(toggler).find(".tab-icon").html("[+]");
-			}
-		}
-
-		$(function() {
-			$("a.tab").click(function() {
-				toggleSection(this);
-			});
-			toggleSection($("a.tab[href='#current-projects']"));
-		})
-		
-	</script>
-	<div class="container">
-		<div class="row" style="margin-top:100px">
-			<div id="left" class="nine columns">
-				<h3>Tolga Sümer</h3>
-				<h5>
-					<a class="tab" href="#education">
-						<span class="tab-icon">[-]</span> Education
-					</a>		
-				</h5>
-				<ul class="section" id="education">
-					<li>
-						<b><a href="https://www.unibo.it/en" target="_blank">University of Bologna | Bologna Business School</a></b>
-						<br />MSc in Data Science and Business Analytics
-						<br />10/2023 – 03/2025
-					</li>
-					<li>
-						<b><a href="https://cs.ku.edu.tr/tr/" target="_blank">Koç University</a></b>
-						<br />BSc in Computer Engineering (Partial Scholarship)
-						<br />09/2017 - 06/2021
-					</li>
-					<li>
-						<b><a href="https://www.koc.k12.tr/en/" target="_blank">Koç Özel High School</a></b>
-						<br />Full Scholarship
-						<br />09/2012 - 06/2017
-					</li>
-				</ul>	
-				<h5>
-					<a class="tab" href="#work-experience">
-						<span class="tab-icon">[-]</span> Work Experience
-					</a>
-				</h5>
-				<ul class="section" id="work-experience">
-					<b><a href="https://codevo.com.tr/" target="_blank">Codevo</a></b>
-
-					<li>
-						<b>Mobile Software Engineer (05/2025 – Now)</b>
-						<br />Driving the development of innovative and user-centric mobile applications for Android and iOS, leveraging both native and cross-platform technologies.
-						<br />Collaborating closely with product teams and designers to deliver high-quality solutions aligned with business objectives.
-						<br />Contributing to architectural decisions and implementing best practices to ensure scalability, performance, and maintainability.
-					</li>
-
-					<b><a href="https://www.ykteknoloji.com.tr/en/" target="_blank">Yapı Kredi Technology</a></b>
-
-					<li>
-						<b>Expert Mobile Software Engineer (08/2023 – 02/2024)</b>
-						<br />Led the end-to-end development of complex and scalable mobile applications for Android and iOS platforms, demonstrating expertise in both native and cross-platform frameworks.
-						<br />Mentored and provided technical guidance to junior engineers, fostering a culture of continuous learning and knowledge sharing within the mobile development team.
-						<br />Spearheaded the adoption of cutting-edge tools, frameworks, and methodologies to optimize the mobile development process and enhance overall efficiency.
-					</li>
-					
-					<li>
-						<b>Mobile Software Engineer (08/2022 – 08/2023)</b>
-						<br />Optimized mobile application performance, addressing bottlenecks and implementing efficiency improvements for a smoother user experience.
-						<br />Integrated third-party APIs and libraries to extend the functionality of mobile applications and stay current with industry trends.
-					</li>
-
-
-					<li>
-						<b>Junior Mobile Software Engineer (07/2021 – 08/2022)</b>
-						<br />Developed and maintained mobile applications for Android and iOS platforms, actively contributing to the entire software development lifecycle.
-						<br />Collaborated with cross-functional teams, including UX/UI designers and product managers, to translate requirements into robust and user-friendly mobile solutions.
-					</li>
-
-					<li>
-						<b>Mobile Software Engineer Intern (07/2020 – 08/2020 & 09/2020 – 02/2021)</b>
-						<br />Collaborated with the development team to design and implement features for mobile applications, focusing on both Android and iOS platforms.
-						<br />Gained hands-on experience with mobile app development frameworks and tools such as Android Studio and Xcode.
-						<br />Gained familiarity with version control systems to manage codebase changes and collaborate effectively with the development team.
-					</li>
-
-					<li>
-						<b>Data Warehouse Engineer Intern (06/2019 – 07/2019)</b>
-						<br />Assisted in the design and development of data warehouse solutions to support business intelligence and reporting needs.
-						<br />Participated in the ETL process, ensuring efficient data extraction from source systems and loading into the data warehouse.
-						<br />Gained hands-on experience with data warehousing tools and technologies such as SQL Server, Oracle, or other relevant platforms.
-					</li>
-					
-				</ul>
-				<h5>
-					<a class="tab" href="#current-projects">
-						<span class="tab-icon">[-]</span> Capstone Projects
-					</a>
-				</h5>
-				<ul class="section" id="current-projects">
-					<li>
-						<b>Cryptocurrency Speculation Detection Through Social Media Using Sentiment Analysis</b>
-						<br />Developed a sentiment analysis pipeline using VADER as a baseline while training a custom NLP model for improved accuracy.
-						<br />Implemented a market prediction system using regression analysis to estimate the impact of sentiment on cryptocurrency trends.
-						<br />Coded web crawlers using Selenium and BeautifulSoup to gather relevant social media and market data.
-						<br />Developed a website to present sentiment analysis insights and market trend predictions to users.
-					</li>
-
-					<li>
-						<b>Influencer Data Processor Through Object Detection and Predictive Analysis</b>
-						<br />Developed a Python-based system to collect, process, and analyze Instagram influencer data.
-						<br />Interacted with the Instagram Graph API to retrieve influencer profiles, posts, and media information while handling access token refreshing and rate limiting.
-						<br />Implemented media processing workflows, including downloading images/videos, performing object detection with OpenCV, and updating the database.
-						<br />Implemented background scheduling to periodically fetch new data and process media files asynchronously.
-					</li>
-				</ul>
+	<header class="navbar">
+		<div class="container navbar-inner">
+			<div class="brand">Tolga <span>Sümer</span>
+				<small><span class="prefix" id="typing-prefix" data-i18n="typing.prefix">I am a </span><span class="typing-word" id="typing-word"></span></small>
 			</div>
-			<div id="right" class="three columns">
-				<img src="./images/photo.png" id="head" alt="My photo" style="width:100%">
-				<div class="row icons">
-					<div class="four columns">
-						<a class="icon" href="https://linkedin.com/in/tolga-sümer" target="_blank">
-							<i class="fab fa-linkedin-in"></i>
-						</a>
-					</div>
-					<div class="four columns">
-						<a class="icon" href="https://github.com/Tolgino" target="_blank">
-							<i class="fab fa-github"></i>
-						</a>
-					</div>
+			<button class="menu-toggle" id="menu-toggle" aria-label="Menu"><i class="fas fa-bars"></i> Menu</button>
+			<nav class="nav" id="site-nav">
+				<a data-i18n="nav.about" href="#about">About</a>
+				<a data-i18n="nav.education" href="#education">Education</a>
+				<a data-i18n="nav.experience" href="#experience">Experience</a>
+				<a data-i18n="nav.projects" href="#projects">Projects</a>
+				<a data-i18n="nav.contact" href="#contact">Contact</a>
+				<span class="lang">
+					<button id="btn-en" aria-label="English" class="active">EN</button>
+					<button id="btn-tr" aria-label="Türkçe">TR</button>
+				</span>
+			</nav>
+		</div>
+	</header>
 
-					<div class="four columns">
-						<a class="icon" href="mailto:tolgasumer1905@gmail.com">
-							<i class="far fa-envelope" style="font-size: 36px;"></i>
-						</a>
-					</div>
-				</div>
-				<hr>
-				Last updated 25 August 2025.
-				<img src="">
+	<section class="container hero">
+		<div>
+			<h1><span class="hi" data-i18n="hero.title_hi">Software Engineer</span><br><span data-i18n="hero.subtitle">building fast, reliable apps and data-driven products.</span></h1>
+			<p data-i18n="hero.blurb">I craft native and cross‑platform experiences with a sharp eye for performance, accessibility, and delightful UX. Currently shipping at Codevo.</p>
+			<div class="badges">
+					<span class="badge" data-i18n="badges.platform"><i class="fas fa-bolt"></i>&nbsp; Android • iOS • Backend</span>
+					<span class="badge" data-i18n="badges.languages"><i class="fas fa-code"></i>&nbsp; Kotlin • Swift • Flutter • React Native • Java • Python</span>
+					<span class="badge" data-i18n="badges.data"><i class="fas fa-database"></i>&nbsp; SQL • Firebase</span>
+					<span class="badge" data-i18n="badges.analytics"><i class="fas fa-chart-line"></i>&nbsp; Analytics • A/B • CI/CD</span>
+			</div>
+			<div class="cta">
+				<a class="button primary" href="#contact"><i class="fas fa-paper-plane"></i> <span data-i18n="cta.contact">Get in touch</span></a>
+				<a class="button" href="https://github.com/Tolgino" target="_blank"><i class="fab fa-github"></i> GitHub</a>
+				<a class="button" href="https://linkedin.com/in/tolga-sümer" target="_blank"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
 			</div>
 		</div>
-	</div>
+		<div>
+			<img class="headshot" src="./images/photo.png" alt="Tolga Sümer portrait" loading="lazy">
+		</div>
+	</section>
 
+	<section id="about" class="section">
+		<div class="container">
+			<h2 data-i18n="about.title">About</h2>
+			<div class="row">
+				<div class="col-8">
+					<div class="card">
+						<p data-i18n="about.blurb">I'm Tolga, a mobile engineer obsessed with smooth interactions and measurable outcomes. I combine solid product thinking with hands‑on engineering to ship features users love and businesses need. Also passionate about data-driven decision making. I like building AI-powered applications.</p>
+					</div>
+				</div>
+				<div class="col-4">
+					<div class="card">
+						<h3>Core Focus</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="about.focus.performance">Performance</li>
+							<li data-i18n="about.focus.architecture">Clean architectures</li>
+							<li data-i18n="about.focus.design">Design systems</li>
+							<li data-i18n="about.focus.telemetry">Experimentation</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="education" class="section alt">
+		<div class="container">
+			<h2 data-i18n="education.title">Education</h2>
+			<div class="cards">
+				<div class="card col-12">
+					<h3><a href="https://www.unibo.it/en" target="_blank" rel="noopener" data-i18n="education.unibo">University of Bologna | Bologna Business School</a></h3>
+					<p class="meta" data-i18n="education.unibo.degree">MSc in Data Science and Business Analytics • 10/2023 – 03/2025</p>
+				</div>
+				<div class="card col-12">
+					<h3><a href="https://cs.ku.edu.tr/tr/" target="_blank" rel="noopener" data-i18n="education.koc">Koç University</a></h3>
+					<p class="meta" data-i18n="education.koc.degree">BSc in Computer Engineering (Partial Scholarship) • 09/2017 – 06/2021</p>
+				</div>
+				<div class="card col-12">
+					<h3><a href="https://www.koc.k12.tr/en/" target="_blank" rel="noopener" data-i18n="education.koc_hs">Koç Özel High School</a></h3>
+					<p class="meta" data-i18n="education.koc_hs.degree">Full Scholarship • 09/2012 – 06/2017</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="experience" class="section alt">
+		<div class="container">
+			<h2 data-i18n="experience.title">Experience</h2>
+			<div class="cards timeline">
+				<div class="card col-12" style="position: relative;">
+					<span class="dot" style="top: 26px; left: 10px;"></span>
+					<div style="margin-left: 32px;">
+						<div class="meta"><i class="fas fa-building"></i> <a href="https://codevo.com.tr/" target="_blank" rel="noopener" data-i18n="experience.codevo.company">Codevo</a> • <span data-i18n="experience.codevo.dates">05/2025 — Present</span></div>
+						<h3 data-i18n="experience.codevo.title">Mobile Software Engineer</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="experience.codevo.1">Driving development of innovative, user‑centric mobile apps for Android & iOS (native and cross‑platform).</li>
+							<li data-i18n="experience.codevo.2">Collaborating closely with product/design to deliver high‑quality solutions aligned with business goals.</li>
+							<li data-i18n="experience.codevo.3">Contributing to architecture decisions and best practices for scalability, performance, and maintainability.</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card col-12" style="position: relative;">
+					<span class="dot" style="top: 26px; left: 10px;"></span>
+					<div style="margin-left: 32px;">
+						<div class="meta"><i class="fas fa-building"></i> <a href="https://www.ykteknoloji.com.tr/en/" target="_blank" rel="noopener" data-i18n="experience.ykt.company">Yapı Kredi Technology</a> • <span data-i18n="experience.ykt.dates1">08/2023 — 02/2024</span></div>
+						<h3 data-i18n="experience.ykt.title1">Expert Mobile Software Engineer</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="experience.ykt.1.1">Led end‑to‑end development of complex, scalable mobile applications for Android and iOS.</li>
+							<li data-i18n="experience.ykt.1.2">Mentored junior engineers, cultivating continuous learning and knowledge sharing.</li>
+							<li data-i18n="experience.ykt.1.3">Introduced modern tools, frameworks, and methodologies to optimize development and CI/CD.</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card col-12" style="position: relative;">
+					<span class="dot" style="top: 26px; left: 10px;"></span>
+					<div style="margin-left: 32px;">
+						<div class="meta"><i class="fas fa-building"></i> <a href="https://www.ykteknoloji.com.tr/en/" target="_blank" rel="noopener" data-i18n="experience.ykt.company">Yapı Kredi Technology</a> • <span data-i18n="experience.ykt.dates2">08/2022 — 08/2023</span></div>
+						<h3 data-i18n="experience.ykt.title2">Mobile Software Engineer</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="experience.ykt.2.1">Optimized application performance, addressing bottlenecks for smoother UX.</li>
+							<li data-i18n="experience.ykt.2.2">Integrated third‑party APIs and libraries to extend functionality and keep pace with industry trends.</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card col-12" style="position: relative;">
+					<span class="dot" style="top: 26px; left: 10px;"></span>
+					<div style="margin-left: 32px;">
+						<div class="meta"><i class="fas fa-building"></i> <a href="https://www.ykteknoloji.com.tr/en/" target="_blank" rel="noopener" data-i18n="experience.ykt.company">Yapı Kredi Technology</a> • <span data-i18n="experience.ykt.dates3">07/2021 — 08/2022</span></div>
+						<h3 data-i18n="experience.ykt.title3">Junior Mobile Software Engineer</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="experience.ykt.3.1">Developed and maintained Android and iOS applications across the full SDLC.</li>
+							<li data-i18n="experience.ykt.3.2">Collaborated with UX/UI and product to translate requirements into robust, user‑friendly features.</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card col-12" style="position: relative;">
+					<span class="dot" style="top: 26px; left: 10px;"></span>
+					<div style="margin-left: 32px;">
+						<div class="meta"><i class="fas fa-building"></i> <a href="https://www.ykteknoloji.com.tr/en/" target="_blank" rel="noopener" data-i18n="experience.ykt.company">Yapı Kredi Technology</a> • <span data-i18n="experience.ykt.dates4">07/2020 — 02/2021</span></div>
+						<h3 data-i18n="experience.ykt.title4">Mobile Software Engineer Intern</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="experience.ykt.4.1">Collaborated to design and implement features for Android and iOS applications.</li>
+							<li data-i18n="experience.ykt.4.2">Gained hands‑on experience with Android Studio, Xcode, and native development tooling.</li>
+							<li data-i18n="experience.ykt.4.3">Learned version control workflows and effective collaboration via code review.</li>
+						</ul>
+					</div>
+				</div>
+				<div class="card col-12" style="position: relative;">
+					<span class="dot" style="top: 26px; left: 10px;"></span>
+					<div style="margin-left: 32px;">
+						<div class="meta"><i class="fas fa-building"></i> <a href="https://www.ykteknoloji.com.tr/en/" target="_blank" rel="noopener" data-i18n="experience.ykt.company">Yapı Kredi Technology</a> • <span data-i18n="experience.ykt.dates5">06/2019 — 07/2019</span></div>
+						<h3 data-i18n="experience.dw.heading">Data Warehouse Engineer Intern</h3>
+						<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="experience.dw.1">Assisted in design and development of data warehouse solutions for BI and reporting.</li>
+							<li data-i18n="experience.dw.2">Participated in ETL pipelines: extraction from source systems and loading into the warehouse.</li>
+							<li data-i18n="experience.dw.3">Gained exposure to SQL Server/Oracle and related tooling.</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<section id="projects" class="section">
+		<div class="container">
+			<h2 data-i18n="projects.title">Projects</h2>
+			<div class="cards">
+				<div class="card col-6">
+					<div class="meta"><i class="fas fa-coins"></i> Python • Flask • SQLite • PostgreSQL • NLTK • VADER • Scikit-learn • AuthLib • Selenium • BeautifulSoup</div>
+						<h3 data-i18n="projects.crypto.title">Cryptocurrency Speculation Detection Through Social Media Using Sentiment Analysis</h3>
+					<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="projects.crypto.sentiment">Developed a sentiment analysis pipeline using VADER as a baseline and trained a custom NLP model for improved accuracy.</li>
+							<li data-i18n="projects.crypto.prediction">Implemented a market prediction system using regression analysis to estimate the impact of sentiment on cryptocurrency trends.</li>
+							<li data-i18n="projects.crypto.crawlers">Coded web crawlers using Selenium and BeautifulSoup to gather relevant social media and market data.</li>
+							<li data-i18n="projects.crypto.website">Built a website to present sentiment insights and market trend predictions to users.</li>
+				</ul>
+				</div>
+				<div class="card col-6">
+					<div class="meta"><i class="fas fa-camera"></i> Python • SQLite • Instagram Graph API • Object Detection • OpenCV • Logging • Background Scheduling</div>
+						<h3 data-i18n="projects.influencer.title">Influencer Data Processor Through Object Detection and Predictive Analysis</h3>
+					<ul style="margin:8px 0 0 18px; color: var(--muted);">
+							<li data-i18n="projects.influencer.collect">Developed a Python‑based system to collect, process, and analyze Instagram influencer data.</li>
+							<li data-i18n="projects.influencer.api">Interacted with the Instagram Graph API to retrieve profiles, posts, and media; handled access token refreshing and rate limiting.</li>
+							<li data-i18n="projects.influencer.processing">Implemented media processing workflows: downloading images/videos, performing object detection with OpenCV, and updating the database.</li>
+							<li data-i18n="projects.influencer.scheduling">Implemented background scheduling to periodically fetch new data and process media asynchronously.</li>
+				</ul>
+				</div>
+			</div>
+					</div>
+	</section>
+
+	<section id="contact" class="section alt">
+		<div class="container">
+			<h2 data-i18n="contact.title">Contact</h2>
+			<div class="cards">
+				<div class="card col-12" style="display:flex; align-items:center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+					<div style="color: var(--muted);" data-i18n="contact.pitch">Open to collaborating on impactful projects and ideas.</div>
+						<div style="display:flex; gap: 10px;">
+							<a class="button" href="mailto:tolgasumer1905@gmail.com"><i class="far fa-envelope"></i> <span data-i18n="contact.email">Email</span></a>
+							<a class="button" href="https://github.com/Tolgino" target="_blank"><i class="fab fa-github"></i> <span data-i18n="contact.github">GitHub</span></a>
+							<a class="button" href="https://linkedin.com/in/tolga-sümer" target="_blank"><i class="fab fa-linkedin-in"></i> <span data-i18n="contact.linkedin">LinkedIn</span></a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer class="footer">
+		<div class="container">
+			<span data-i18n="footer.copyright">© 2025 Tolga Sümer</span>
+	</div>
+	</footer>
+
+	<script>
+		// Smooth scroll
+		document.querySelectorAll('a[href^="#"]').forEach(function(anchor){
+			anchor.addEventListener('click', function(e){
+				var targetId = this.getAttribute('href');
+				if(targetId.length > 1){
+					e.preventDefault();
+					document.querySelector(targetId).scrollIntoView({ behavior: 'smooth' });
+				}
+			});
+		});
+
+		// Mobile menu toggle
+		var menuBtn = document.getElementById('menu-toggle');
+		var nav = document.getElementById('site-nav');
+		if(menuBtn && nav){
+			menuBtn.addEventListener('click', function(){
+				nav.classList.toggle('open');
+			});
+			// Close after clicking a link (mobile UX)
+			nav.querySelectorAll('a').forEach(function(link){
+				link.addEventListener('click', function(){ nav.classList.remove('open'); });
+			});
+		}
+
+		// i18n dictionary
+		var I18N = {
+			en: {
+				"experience.codevo.company": "Codevo",
+				"experience.codevo.dates": "05/2025 — Present",
+				"experience.codevo.title": "Mobile Software Engineer",
+				"experience.codevo.1": "Driving development of innovative, user‑centric mobile apps for Android & iOS (native and cross‑platform).",
+				"experience.codevo.2": "Collaborating closely with product/design to deliver high‑quality solutions aligned with business goals.",
+				"experience.codevo.3": "Contributing to architecture decisions and best practices for scalability, performance, and maintainability.",
+				"experience.ykt.company": "Yapı Kredi Technology",
+				"experience.ykt.dates1": "08/2023 — 02/2024",
+				"experience.ykt.title1": "Expert Mobile Software Engineer",
+				"experience.ykt.1.1": "Led end‑to‑end development of complex, scalable mobile applications for Android and iOS.",
+				"experience.ykt.1.2": "Mentored junior engineers, cultivating continuous learning and knowledge sharing.",
+				"experience.ykt.1.3": "Introduced modern tools, frameworks, and methodologies to optimize development and CI/CD.",
+				"experience.ykt.dates2": "08/2022 — 08/2023",
+				"experience.ykt.title2": "Mobile Software Engineer",
+				"experience.ykt.2.1": "Optimized application performance, addressing bottlenecks for smoother UX.",
+				"experience.ykt.2.2": "Integrated third‑party APIs and libraries to extend functionality and keep pace with industry trends.",
+				"experience.ykt.dates3": "07/2021 — 08/2022",
+				"experience.ykt.title3": "Junior Mobile Software Engineer",
+				"experience.ykt.3.1": "Developed and maintained Android and iOS applications across the full SDLC.",
+				"experience.ykt.3.2": "Collaborated with UX/UI and product to translate requirements into robust, user‑friendly features.",
+				"experience.ykt.dates4": "07/2020 — 02/2021",
+				"experience.ykt.title4": "Mobile Software Engineer Intern",
+				"experience.ykt.4.1": "Collaborated to design and implement features for Android and iOS applications.",
+				"experience.ykt.4.2": "Gained hands‑on experience with Android Studio, Xcode, and native development tooling.",
+				"experience.ykt.4.3": "Learned version control workflows and effective collaboration via code review.",
+				"experience.ykt.dates5": "06/2019 — 07/2019",
+				"experience.dw.heading": "Data Warehouse Engineer Intern",
+				"experience.dw.1": "Assisted in design and development of data warehouse solutions for BI and reporting.",
+				"experience.dw.2": "Participated in ETL pipelines: extraction from source systems and loading into the warehouse.",
+				"experience.dw.3": "Gained exposure to SQL Server/Oracle and related tooling.",
+				"education.unibo": "University of Bologna | Bologna Business School",
+				"education.unibo.degree": "MSc in Data Science and Business Analytics • 10/2023 – 03/2025",
+				"education.koc": "Koç University",
+				"education.koc.degree": "BSc in Computer Engineering (Partial Scholarship) • 09/2017 – 06/2021",
+				"education.koc_hs": "Koç Özel High School",
+				"education.koc_hs.degree": "Full Scholarship • 09/2012 – 06/2017",
+				"nav.about": "About",
+				"nav.education": "Education",
+				"nav.experience": "Experience",
+				"nav.projects": "Projects",
+				"nav.contact": "Contact",
+				"hero.title_hi": "Software Engineer",
+				"hero.subtitle": "building fast, reliable apps and data-driven products.",
+				"hero.blurb": "I craft native and cross‑platform experiences with a sharp eye for performance, accessibility, and delightful UX. Currently shipping at Codevo.",
+				"cta.contact": "Get in touch",
+				"about.title": "About",
+				"about.blurb": "I'm Tolga, a software engineer obsessed with smooth interactions and measurable outcomes. I combine solid product thinking with hands‑on engineering to ship features users love and businesses need. Also passionate about data-driven decision making. I like building AI-powered applications.",
+				"about.degree": "MSc, Data Science & Business Analytics — University of Bologna",
+				"about.focus.performance": "Performance",
+				"about.focus.architecture": "Clean architectures",
+				"about.focus.design": "Design systems",
+				"about.focus.telemetry": "Experimentation",
+				"education.title": "Education",
+				"experience.title": "Experience",
+				"projects.title": "Projects",
+				"projects.crypto.title": "Cryptocurrency Speculation Detection Through Social Media Using Sentiment Analysis",
+				"projects.crypto.sentiment": "Developed a sentiment analysis pipeline using VADER as a baseline and trained a custom NLP model for improved accuracy.",
+				"projects.crypto.prediction": "Implemented a market prediction system using regression analysis to estimate the impact of sentiment on cryptocurrency trends.",
+				"projects.crypto.crawlers": "Coded web crawlers using Selenium and BeautifulSoup to gather relevant social media and market data.",
+				"projects.crypto.website": "Built a website to present sentiment insights and market trend predictions to users.",
+				"projects.influencer.title": "Influencer Data Processor Through Object Detection and Predictive Analysis",
+				"projects.influencer.collect": "Developed a Python‑based system to collect, process, and analyze Instagram influencer data.",
+				"projects.influencer.api": "Interacted with the Instagram Graph API to retrieve profiles, posts, and media; handled access token refreshing and rate limiting.",
+				"projects.influencer.processing": "Implemented media processing workflows: downloading images/videos, performing object detection with OpenCV, and updating the database.",
+				"projects.influencer.scheduling": "Implemented background scheduling to periodically fetch new data and process media asynchronously.",
+				"badges.platform": "Android • iOS • Backend",
+				"badges.languages": "Kotlin • Swift • Flutter • React Native • Java • Python",
+				"badges.data": "SQL • Firebase",
+				"badges.analytics": "Analytics • A/B • CI/CD",
+				"contact.title": "Contact",
+				"contact.pitch": "Open to collaborating on impactful projects and ideas.",
+				"contact.email": "Email",
+				"contact.github": "GitHub",
+				"contact.linkedin": "LinkedIn",
+				"footer.copyright": "© 2025 Tolga Sümer",
+				"typing.prefix": "I am ",
+				"typing.words": ["a Coder", "a Developer", "an AI Enthusiast"]
+			},
+			tr: {
+				"experience.codevo.company": "Codevo",
+				"experience.codevo.dates": "05/2025 — Günümüz",
+				"experience.codevo.title": "Mobil Yazılım Mühendisi",
+				"experience.codevo.1": "Android ve iOS için (yerel ve çapraz platform) yenilikçi, kullanıcı odaklı mobil uygulamaların geliştirilmesine liderlik ediyorum.",
+				"experience.codevo.2": "Ürün ve tasarım ekipleriyle yakın çalışarak, iş hedefleriyle uyumlu yüksek kaliteli çözümler üretiyorum.",
+				"experience.codevo.3": "Ölçeklenebilirlik, performans ve sürdürülebilirlik için mimari kararlar ve en iyi uygulamalar geliştirilmesine katkıda bulunuyorum.",
+				"experience.ykt.company": "Yapı Kredi Teknoloji",
+				"experience.ykt.dates1": "08/2023 — 02/2024",
+				"experience.ykt.title1": "Uzman Mobil Yazılım Mühendisi",
+				"experience.ykt.1.1": "Android ve iOS için karmaşık ve ölçeklenebilir mobil uygulamaların uçtan uca geliştirilmesini yönettim.",
+				"experience.ykt.1.2": "Junior mühendislerin gelişimi için mentorluk yaptım, sürekli öğrenme ve bilgi paylaşımını teşvik ettim.",
+				"experience.ykt.1.3": "Geliştirme ve CI/CD süreçlerini optimize etmek amacıyla modern araçlar, çerçeveler ve metodolojiler tanıttım.",
+				"experience.ykt.dates2": "08/2022 — 08/2023",
+				"experience.ykt.title2": "Mobil Yazılım Mühendisi",
+				"experience.ykt.2.1": "Uygulama performansını optimize ederek kullanıcı deneyimini daha akıcı hale getirdim.",
+				"experience.ykt.2.2": "Fonksiyonelliği artırmak ve sektörel trendleri yakalamak için üçüncü taraf API ve kütüphaneleri entegre ettim.",
+				"experience.ykt.dates3": "07/2021 — 08/2022",
+				"experience.ykt.title3": "Asistan Mobil Yazılım Mühendisi",
+				"experience.ykt.3.1": "Android ve iOS uygulamalarının tüm yaşam döngüsünde geliştirme ve bakımını üstlendim.",
+				"experience.ykt.3.2": "UX/UI ve ürün ekipleriyle işbirliği yaparak gereksinimleri sağlam, kullanıcı dostu özelliklere dönüştürdüm.",
+				"experience.ykt.dates4": "07/2020 — 02/2021",
+				"experience.ykt.title4": "Mobil Yazılım Mühendisi Stajyeri",
+				"experience.ykt.4.1": "Android ve iOS uygulamaları için özelliklerin tasarım ve geliştirilmesinde görev aldım.",
+				"experience.ykt.4.2": "Android Studio, Xcode ve yerel geliştirme araçlarıyla uygulamalı deneyim kazandım.",
+				"experience.ykt.4.3": "Versiyon kontrolü ve kod inceleme süreçlerinde etkili işbirliği yöntemlerini öğrendim.",
+				"experience.ykt.dates5": "06/2019 — 07/2019",
+				"experience.dw.heading": "Veri Ambarı Mühendisi Stajyeri",
+				"experience.dw.1": "BI ve raporlama için veri ambarı çözümlerinin tasarım ve geliştirilmesine katkıda bulundum.",
+				"experience.dw.2": "ETL süreçlerinde görev aldım: kaynak sistemlerden veri çıkarma ve ambarlara yükleme işlemleri.",
+				"experience.dw.3": "SQL Server/Oracle ve ilgili araçlarla deneyim kazandım.",
+				"education.unibo": "Bologna Üniversitesi | Bologna İşletme Okulu",
+				"education.unibo.degree": "Yüksek Lisans, Veri Bilimi ve İş Analitiği • 10/2023 – 03/2025",
+				"education.koc": "Koç Üniversitesi",
+				"education.koc.degree": "Bilgisayar Mühendisliği Lisans (Kısmi Burslu) • 09/2017 – 06/2021",
+				"education.koc_hs": "Koç Özel Lisesi",
+				"education.koc_hs.degree": "Tam Burslu • 09/2012 – 06/2017",
+				"nav.about": "Hakkımda",
+				"nav.education": "Eğitim",
+				"nav.experience": "Deneyim",
+				"nav.projects": "Projeler",
+				"nav.contact": "İletişim",
+				"hero.title_hi": "Bilgisayar Mühendisi",
+				"hero.subtitle": "hızlı, güvenilir ve veri odaklı uygulamalar geliştiriyorum.",
+				"hero.blurb": "Performans, erişilebilirlik ve keyifli kullanıcı deneyimine odaklanan yerel ve çapraz platform çözümleri geliştiriyorum. Şu anda Codevo'da çalışıyorum.",
+				"cta.contact": "İletişime Geç",
+				"about.title": "Hakkımda",
+				"about.blurb": "Ben Tolga, akıcı etkileşimler ve ölçülebilir sonuçlara önem veren bir bilgisayar mühendisiyim. Sağlam ürün vizyonunu uygulamalı mühendislik ile birleştirerek kullanıcıların sevdiği ve işletmelerin ihtiyaç duyduğu özellikler geliştiriyorum. Ayrıca veri odaklı karar verme konusuna tutkuluyum. Yapay zeka destekli uygulamalar geliştirmeyi seviyorum.",
+				"about.degree": "Yüksek Lisans, Veri Bilimi & İş Analitiği — Bologna Üniversitesi",
+				"about.focus.performance": "Performans",
+				"about.focus.architecture": "Temiz mimariler",
+				"about.focus.design": "Tasarım sistemleri",
+				"about.focus.telemetry": "Deneyler",
+				"education.title": "Eğitim",
+				"experience.title": "Deneyim",
+				"projects.title": "Projeler",
+				"projects.crypto.title": "Sosyal Medya Üzerinden Duygu Analizi ile Kripto Para Spekülasyon Tespiti",
+				"projects.crypto.sentiment": "VADER tabanlı bir duygu analizi hattı geliştirildi ve doğruluk artırmak için özel bir NLP modeli eğitildi.",
+				"projects.crypto.prediction": "Duyguların kripto para trendleri üzerindeki etkisini tahmin etmek için regresyon analiziyle piyasa tahmin sistemi uygulandı.",
+				"projects.crypto.crawlers": "İlgili sosyal medya ve piyasa verilerini toplamak için Selenium ve BeautifulSoup kullanılarak web tarayıcıları geliştirildi.",
+				"projects.crypto.website": "Duygu analizleri ve piyasa tahminlerini kullanıcıya sunmak için bir web sitesi oluşturuldu.",
+				"projects.influencer.title": "Nesne Tespiti ve Tahmine Dayalı Analiz ile Influencer Veri İşleme",
+				"projects.influencer.collect": "Instagram influencer verilerini toplamak, işlemek ve analiz etmek için Python tabanlı bir sistem geliştirildi.",
+				"projects.influencer.api": "Instagram Graph API kullanılarak profiller, gönderiler ve medyalar çekildi; erişim token yenileme ve hız sınırlaması yönetildi.",
+				"projects.influencer.processing": "Medya işleme akışları: görsel/video indirme, OpenCV ile nesne tespiti ve veritabanı güncellemeleri uygulandı.",
+				"projects.influencer.scheduling": "Yeni verileri periyodik olarak almak ve medyayı asenkron işlemek için arka plan zamanlayıcıları uygulandı.",
+				"badges.platform": "Android • iOS • Backend",
+				"badges.languages": "Kotlin • Swift • Flutter • React Native • Java • Python",
+				"badges.data": "SQL • Firebase",
+				"badges.analytics": "Analitik • A/B Testleri • CI/CD",
+				"contact.title": "İletişim",
+				"contact.pitch": "Etkili projelerde ve fikirlerde iş birliğine açığım.",
+				"contact.email": "E-posta",
+				"contact.github": "GitHub",
+				"contact.linkedin": "LinkedIn",
+				"footer.copyright": "© 2025 Tolga Sümer",
+				"typing.prefix": "Ben bir ",
+				"typing.words": ["Yazılımcıyım", "Mühendisim", "Yapay Zeka Meraklısıyım"]
+			}
+		};
+
+		// Apply translations
+		function applyI18n(lang){
+			var dict = I18N[lang] || I18N.en;
+			document.documentElement.setAttribute('lang', lang);
+			document.querySelectorAll('[data-i18n]').forEach(function(el){
+				var key = el.getAttribute('data-i18n');
+				if(dict[key]){ el.textContent = dict[key]; }
+			});
+			// Update typing prefix
+			var prefixEl = document.getElementById('typing-prefix');
+			if(prefixEl){ prefixEl.textContent = dict['typing.prefix']; }
+			// Toggle active lang button
+			document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+			document.getElementById('btn-tr').classList.toggle('active', lang === 'tr');
+		}
+
+		// Typing animation
+		var typingEl = document.getElementById('typing-word');
+		var typingState = { i: 0, j: 0, deleting: false, words: I18N.en["typing.words"], lastTime: 0 };
+		function setTypingWordsForLang(lang){
+			typingState.words = (I18N[lang] || I18N.en)["typing.words"];
+			typingState.i = 0; typingState.j = 0; typingState.deleting = false;
+		}
+		function tickTyping(){
+			if(!typingEl || !typingState.words || typingState.words.length === 0) return;
+			var current = typingState.words[typingState.i % typingState.words.length];
+			if(!typingState.deleting){
+				typingState.j++;
+				if(typingState.j >= current.length + 8){ // small pause at end
+					typingState.deleting = true;
+				}
+			} else {
+				typingState.j--;
+				if(typingState.j <= 0){
+					typingState.deleting = false;
+					typingState.i = (typingState.i + 1) % typingState.words.length;
+				}
+			}
+			typingEl.textContent = current.substring(0, Math.max(0, Math.min(current.length, typingState.j)));
+			var delay = typingState.deleting ? 45 : 90;
+			setTimeout(tickTyping, delay);
+		}
+
+		// Language handlers
+		var savedLang = (localStorage.getItem('lang') || 'en');
+		applyI18n(savedLang);
+		setTypingWordsForLang(savedLang);
+		setTimeout(tickTyping, 400);
+		document.getElementById('btn-en').addEventListener('click', function(){ localStorage.setItem('lang','en'); applyI18n('en'); setTypingWordsForLang('en'); });
+		document.getElementById('btn-tr').addEventListener('click', function(){ localStorage.setItem('lang','tr'); applyI18n('tr'); setTypingWordsForLang('tr'); });
+	</script>
 </body>
 </html>
