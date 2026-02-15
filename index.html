@@ -68,8 +68,11 @@
 		.button { display: inline-flex; align-items: center; gap: 10px; padding: 12px 14px; border-radius: 12px; font-weight: 700; border: 1px solid var(--border); color: var(--text); background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02)); }
 		.button.primary { background: linear-gradient(90deg, var(--brand), var(--brand-2)); color: #0b0d12; border: 0; }
 		.button:hover { transform: translateY(-1px); box-shadow: 0 10px 24px rgba(0,0,0,0.25); }
-		.headshot { width: 100%; border-radius: 20px; border: 1px solid var(--border); filter: grayscale(10%); box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
-
+		.image-wrapper { position: relative; display: inline-block; }
+		.headshot { display: block; width: 100%; height: auto; }
+		.top-link, .bottom-link { position: absolute; left: 0; width: 100%; }
+		.top-link { top: 0; height: 50%; }
+		.bottom-link { bottom: 0; height: 50%; }
 		/* Sections */
 		.section { padding: 44px 0; position: relative; z-index: 0; }
 		.section:before { content: ""; position: absolute; z-index: -1; top: 0; bottom: 0; left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw; background: var(--bg); }
@@ -173,8 +176,19 @@
 				<a class="button" href="https://linkedin.com/in/tolga-sümer" target="_blank"><i class="fab fa-linkedin-in"></i> LinkedIn</a>
 			</div>
 		</div>
-		<div>
-			<a href="./flappy-bird/index.html" title="Play Flappy Bird"><img class="headshot" src="./images/photo.png" alt="Tolga Sümer portrait" loading="lazy"></a>
+		<div class="image-wrapper">
+		<img 
+			class="headshot" 
+			src="./images/photo.png" 
+			alt="Tolga Sümer portrait" 
+			loading="lazy"
+		>
+
+		<!-- Top Half -->
+		<a href="./flappy-bird/index.html" class="top-link" title="Play Flappy Bird"></a>
+
+		<!-- Bottom Half -->
+		<a href="./catch-cats/index.html" class="bottom-link" title="Play Catch Cats"></a>
 		</div>
 	</section>
 

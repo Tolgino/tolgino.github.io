@@ -43,7 +43,7 @@
         .game-container {
             position: relative;
             width: 100%;
-            flex: 0.9;
+            flex: 0.85;
             background-image: url('background.png');
             background-size: cover;
             background-position: center;
@@ -184,7 +184,7 @@
             color: white;
             padding: 10px 15px;
             border-radius: 5px;
-            font-size: 14px;
+            font-size: 20px;
             text-align: center;
             width: 100%;
         }
@@ -225,6 +225,12 @@
                 padding: 5px 10px;
             }
         }
+
+        @media (hover: hover) and (pointer: fine) {
+            .game-container {
+                cursor: auto;
+            }
+        }
     </style>
 </head>
 <body>
@@ -243,9 +249,6 @@
                 <button class="restart-btn" onclick="location.reload()">Play Again</button>
             </div>
         </div>
-    </div>
-    <div class="instructions">
-        Touch left/right side to move
     </div>
     <div class="instructions">
         Catch Bikbik & Sütlaç (+5 pts)
@@ -290,9 +293,9 @@
         let gameWidth = gameContainer.offsetWidth;
         let gameHeight = gameContainer.offsetHeight;
         let bucketX = (gameWidth - 80) / 2;
-        const bucketSpeed = gameWidth * 0.015;
-        const bucketWidth = gameWidth * 0.1;
-        const bucketHeight = gameHeight * 0.12;
+        let bucketSpeed = gameWidth * 0.015;
+        let bucketWidth = gameWidth * 0.1;
+        let bucketHeight = gameHeight * 0.12;
 
         const keys = {
             left: false,
@@ -309,7 +312,7 @@
             constructor(type) {
                 this.id = itemId++;
                 this.type = type;
-                const itemSize = (type === 'bikbik' || type === 'sutlac') ? gameWidth * 0.1 : gameWidth * 0.12;
+                const itemSize = (type === 'bikbik' || type === 'sutlac') ? gameWidth * 0.15 : gameWidth * 0.13;
                 this.itemSize = itemSize;
                 this.x = Math.random() * (gameWidth - itemSize);
                 this.y = -itemSize;
@@ -353,19 +356,45 @@
             }
         }
 
+        function clampBucketX(nextX) {
+            return Math.max(0, Math.min(gameWidth - bucketWidth, nextX));
+        }
+
+        function recalcDimensions() {
+            gameWidth = gameContainer.offsetWidth;
+            gameHeight = gameContainer.offsetHeight;
+            bucketSpeed = gameWidth * 0.015;
+            bucketWidth = gameWidth * 0.1;
+            bucketHeight = gameHeight * 0.12;
+            bucketX = clampBucketX(bucketX);
+            bucket.style.width = bucketWidth + 'px';
+            bucket.style.height = bucketHeight + 'px';
+            bucket.style.left = bucketX + 'px';
+        }
+
         // Set bucket dimensions
-        bucket.style.width = bucketWidth + 'px';
-        bucket.style.height = bucketHeight + 'px';
+        recalcDimensions();
 
         // Update bucket position
         function updateBucket() {
             if (keys.left || keys.ArrowLeft) {
-                bucketX = Math.max(0, bucketX - bucketSpeed);
+                bucketX = clampBucketX(bucketX - bucketSpeed);
             }
             if (keys.right || keys.ArrowRight) {
-                bucketX = Math.min(gameWidth - bucketWidth, bucketX + bucketSpeed);
+                bucketX = clampBucketX(bucketX + bucketSpeed);
             }
             bucket.style.left = bucketX + 'px';
+        }
+
+        // Mouse controls for desktop
+        const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+        if (isFinePointer.matches) {
+            gameContainer.addEventListener('mousemove', (e) => {
+                const rect = gameContainer.getBoundingClientRect();
+                const nextX = e.clientX - rect.left - bucketWidth / 2;
+                bucketX = clampBucketX(nextX);
+                bucket.style.left = bucketX + 'px';
+            });
         }
 
         // Touch handlers for mobile
@@ -402,6 +431,10 @@
                 }
             }
         }, { passive: false })
+
+        window.addEventListener('resize', () => {
+            recalcDimensions();
+        });
 
         // Spawn falling items
         function spawnItem() {
