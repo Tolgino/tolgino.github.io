@@ -2,7 +2,9 @@ const RAD = Math.PI / 180;
 const scrn = document.getElementById("canvas");
 const sctx = scrn.getContext("2d");
 scrn.tabIndex = 1;
-scrn.addEventListener("click", (e) => {
+
+function handleGameInput(e) {
+  e.preventDefault();
   switch (state.curr) {
     case state.charSelect:
       handleCharacterSelection(e);
@@ -24,7 +26,10 @@ scrn.addEventListener("click", (e) => {
       SFX.played = false;
       break;
   }
-});
+}
+
+scrn.addEventListener("click", handleGameInput);
+scrn.addEventListener("touchstart", handleGameInput);
 
 scrn.onkeydown = function keyDown(e) {
   if (e.keyCode == 32 || e.keyCode == 87 || e.keyCode == 38) {
@@ -372,8 +377,13 @@ function handleCharacterSelection(e) {
   const rect = scrn.getBoundingClientRect();
   const scaleX = scrn.width / rect.width;
   const scaleY = scrn.height / rect.height;
-  const clickX = (e.clientX - rect.left) * scaleX;
-  const clickY = (e.clientY - rect.top) * scaleY;
+  
+  // Handle both mouse and touch events
+  const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
+  const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+  
+  const clickX = (clientX - rect.left) * scaleX;
+  const clickY = (clientY - rect.top) * scaleY;
   
   const charY = 150;
   const charSpacing = 90;
