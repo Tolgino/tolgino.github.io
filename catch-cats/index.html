@@ -1,0 +1,543 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1, minimum-scale=1">
+    <title>Catch Bikbik & Sutlac - Avoid Tolga & Pelinsu!</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+            touch-action: none;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .game-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            height: 100vh;
+            padding: 5px;
+            gap: 5px;
+        }
+
+        .game-container {
+            position: relative;
+            width: 100%;
+            flex: 0.9;
+            background-image: url('background.png');
+            background-size: cover;
+            background-position: center;
+            border: 4px solid #fff;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+            cursor: none;
+        }
+
+        .game-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .ui-panel {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            right: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 15px 25px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .score {
+            font-size: 24px;
+            color: #4CAF50;
+        }
+
+        .timer {
+            font-size: 24px;
+            color: #FF9800;
+        }
+
+        .falling-item {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .tolga {
+            background-image: url('tolga.png');
+        }
+
+        .pelinsu {
+            background-image: url('pelinsu.png');
+        }
+
+        .bikbik {
+            background-image: url('bikbik.png');
+        }
+
+        .sutlac {
+            background-image: url('sutlac.png');
+        }
+
+        .bucket {
+            position: absolute;
+            bottom: 10px;
+            background-image: url('pail.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            z-index: 50;
+        }
+
+        .game-over-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+        }
+
+        .game-over-screen.show {
+            display: flex;
+        }
+
+        .game-over-content {
+            text-align: center;
+            color: white;
+        }
+
+        .game-over-content h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            color: #4CAF50;
+        }
+
+        .game-over-content p {
+            font-size: 28px;
+            margin: 10px 0;
+        }
+
+        .final-score {
+            font-size: 36px;
+            color: #FFD700;
+            margin: 20px 0;
+        }
+
+        .restart-btn {
+            margin-top: 30px;
+            padding: 15px 40px;
+            font-size: 20px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .restart-btn:hover {
+            background: #45a049;
+        }
+
+        .instructions {
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-size: 14px;
+            text-align: center;
+            width: 100%;
+        }
+
+        @media (max-width: 480px) {
+            .ui-panel {
+                font-size: 14px;
+                padding: 10px 15px;
+            }
+
+            .score {
+                font-size: 16px;
+            }
+
+            .timer {
+                font-size: 16px;
+            }
+
+            .game-over-content h1 {
+                font-size: 32px;
+            }
+
+            .game-over-content p {
+                font-size: 18px;
+            }
+
+            .final-score {
+                font-size: 24px;
+            }
+
+            .restart-btn {
+                padding: 10px 30px;
+                font-size: 14px;
+            }
+
+            .instructions {
+                font-size: 17px;
+                padding: 5px 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-wrapper">
+    <div class="game-container" id="gameContainer">
+        <div class="ui-panel">
+            <div class="score">Score: <span id="score">0</span></div>
+            <div class="timer">Time: <span id="timer">60</span>s</div>
+        </div>
+        <div class="bucket" id="bucket"></div>
+        <div class="game-over-screen" id="gameOverScreen">
+            <div class="game-over-content">
+                <h1>Game Over!</h1>
+                <p>Final Score:</p>
+                <div class="final-score"><span id="finalScore">0</span></div>
+                <button class="restart-btn" onclick="location.reload()">Play Again</button>
+            </div>
+        </div>
+    </div>
+    <div class="instructions">
+        Touch left/right side to move
+    </div>
+    <div class="instructions">
+        Catch Bikbik & Sütlaç (+5 pts)
+    </div>
+    <div class="instructions">
+        Avoid Tolga & Pelinsu (Game Over!)
+    </div>
+    </div>
+
+    <script>
+        // Prevent zoom on double-click
+        document.addEventListener('dblclick', (e) => {
+            e.preventDefault();
+        }, { passive: false });
+
+        // Prevent pinch zoom
+        document.addEventListener('wheel', (e) => {
+            if (e.ctrlKey) {
+                e.preventDefault();
+            }
+        }, { passive: false });
+
+        // Prevent zoom with keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if ((e.ctrlKey || e.metaKey) && (e.key === '+' || e.key === '-' || e.key === '0')) {
+                e.preventDefault();
+            }
+        });
+
+        const gameContainer = document.getElementById('gameContainer');
+        const bucket = document.getElementById('bucket');
+        const scoreDisplay = document.getElementById('score');
+        const timerDisplay = document.getElementById('timer');
+        const gameOverScreen = document.getElementById('gameOverScreen');
+        const finalScoreDisplay = document.getElementById('finalScore');
+
+        let score = 0;
+        let timeLeft = 60;
+        let gameRunning = true;
+
+        // Get actual game dimensions from container
+        let gameWidth = gameContainer.offsetWidth;
+        let gameHeight = gameContainer.offsetHeight;
+        let bucketX = (gameWidth - 80) / 2;
+        const bucketSpeed = gameWidth * 0.015;
+        const bucketWidth = gameWidth * 0.1;
+        const bucketHeight = gameHeight * 0.12;
+
+        const keys = {
+            left: false,
+            right: false,
+            ArrowLeft: false,
+            ArrowRight: false
+        };
+
+        const fallingItems = [];
+        let itemId = 0;
+
+        // Falling item class
+        class FallingItem {
+            constructor(type) {
+                this.id = itemId++;
+                this.type = type;
+                const itemSize = (type === 'bikbik' || type === 'sutlac') ? gameWidth * 0.1 : gameWidth * 0.12;
+                this.itemSize = itemSize;
+                this.x = Math.random() * (gameWidth - itemSize);
+                this.y = -itemSize;
+                this.speed = (gameHeight * 0.005) + Math.random() * (gameHeight * 0.003);
+                this.element = null;
+                this.createElement();
+            }
+
+            createElement() {
+                const elem = document.createElement('div');
+                elem.className = `falling-item ${this.type}`;
+                elem.id = `item-${this.id}`;
+                elem.style.width = this.itemSize + 'px';
+                elem.style.height = this.itemSize + 'px';
+                gameContainer.appendChild(elem);
+                this.element = elem;
+            }
+
+            update() {
+                this.y += this.speed;
+                this.element.style.left = this.x + 'px';
+                this.element.style.top = this.y + 'px';
+            }
+
+            isOffScreen() {
+                return this.y > gameHeight;
+            }
+
+            remove() {
+                if (this.element) {
+                    this.element.remove();
+                }
+            }
+
+            checkCollision(bucketX) {
+                return (
+                    this.x < bucketX + bucketWidth &&
+                    this.x + this.itemSize > bucketX &&
+                    this.y + this.itemSize > gameHeight - bucketHeight - 10
+                );
+            }
+        }
+
+        // Set bucket dimensions
+        bucket.style.width = bucketWidth + 'px';
+        bucket.style.height = bucketHeight + 'px';
+
+        // Update bucket position
+        function updateBucket() {
+            if (keys.left || keys.ArrowLeft) {
+                bucketX = Math.max(0, bucketX - bucketSpeed);
+            }
+            if (keys.right || keys.ArrowRight) {
+                bucketX = Math.min(gameWidth - bucketWidth, bucketX + bucketSpeed);
+            }
+            bucket.style.left = bucketX + 'px';
+        }
+
+        // Touch handlers for mobile
+        document.addEventListener('touchstart', (e) => {
+            const rect = gameContainer.getBoundingClientRect();
+            for (let touch of e.touches) {
+                const touchX = touch.clientX - rect.left;
+                if (touchX < rect.width / 2) {
+                    keys.left = true;
+                    keys.right = false;
+                } else {
+                    keys.right = true;
+                    keys.left = false;
+                }
+            }
+        });
+
+        document.addEventListener('touchend', (e) => {
+            keys.left = false;
+            keys.right = false;
+        });
+
+        document.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            const rect = gameContainer.getBoundingClientRect();
+            for (let touch of e.touches) {
+                const touchX = touch.clientX - rect.left;
+                if (touchX < rect.width / 2) {
+                    keys.left = true;
+                    keys.right = false;
+                } else {
+                    keys.right = true;
+                    keys.left = false;
+                }
+            }
+        }, { passive: false })
+
+        // Spawn falling items
+        function spawnItem() {
+            if (!gameRunning) return;
+            
+            const itemTypes = ['tolga', 'pelinsu', 'bikbik', 'sutlac'];
+            const randomType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
+            const newItem = new FallingItem(randomType);
+            fallingItems.push(newItem);
+        }
+
+        // Spawn items at intervals
+        let spawnInterval = setInterval(() => {
+            if (gameRunning) {
+                spawnItem();
+            }
+        }, 600);
+
+        // Game update loop
+        function gameLoop() {
+            if (!gameRunning) return;
+
+            // Update bucket
+            updateBucket();
+
+            // Update all falling items
+            for (let i = fallingItems.length - 1; i >= 0; i--) {
+                const item = fallingItems[i];
+                item.update();
+
+                // Check collision
+                if (item.checkCollision(bucketX)) {
+                    if (item.type === 'tolga' || item.type === 'pelinsu') {
+                        endGame();
+                        item.remove();
+                        fallingItems.splice(i, 1);
+                    } else if (item.type === 'bikbik' || item.type === 'sutlac') {
+                        score += 5;
+                        score = Math.max(0, score);
+                        scoreDisplay.textContent = score;
+                        item.remove();
+                        fallingItems.splice(i, 1);
+                    }
+                } else if (item.isOffScreen()) {
+                    item.remove();
+                    fallingItems.splice(i, 1);
+                }
+            }
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // Timer countdown
+        let timerInterval = setInterval(() => {
+            if (gameRunning) {
+                timeLeft--;
+                timerDisplay.textContent = timeLeft;
+
+                if (timeLeft <= 0) {
+                    endGame();
+                }
+            }
+        }, 1000);
+
+        // End game
+        function endGame() {
+            gameRunning = false;
+            clearInterval(spawnInterval);
+            clearInterval(timerInterval);
+            fallingItems.forEach(item => item.remove());
+            finalScoreDisplay.textContent = score;
+            gameOverScreen.classList.add('show');
+        }
+
+        // Start game
+        gameLoop();
+
+        function create() {
+            // Add background first so it appears behind other sprites
+            this.add.image(400, 300, 'background');  // Position at center of game (800/2, 600/2)
+            
+            // Replace rectangle with sprite
+            this.player = this.add.sprite(400, 550, 'player');
+            this.player.setScale(1); // Adjust this value if needed to match desired size
+            
+            // Replace rectangle with apple sprite
+            this.item = this.add.sprite(400, 50, 'apple');
+            this.item.setScale(.5); // Adjust scale if needed
+
+            // Enable physics
+            this.physics.add.existing(this.player);
+            this.physics.add.existing(this.item);
+
+            // Player controls
+            this.cursors = this.input.keyboard.createCursorKeys();
+
+            this.score = 0;
+            this.itemSpeed = 1;
+            this.scoreText = this.add.text(16, 16, 'Score: 0', { fontSize: '24px', fill: '#000000' });
+        }
+
+        function update() {
+            
+            this.item.y += this.itemSpeed;
+
+            if (this.score > 0 && this.score % 50 === 0) {
+                this.itemSpeed += 0.5;
+                console.log('Going faster! Speed is now: ' + this.itemSpeed);
+            }
+            
+            // Move player left
+            if (this.cursors.left.isDown) {
+                this.player.x -= 5;
+            }
+            // Move player right
+            else if (this.cursors.right.isDown) {
+                this.player.x += 5;
+            }
+             // Move falling item
+            //this.item.y += 3;
+
+            // Reset item position
+            if (this.item.y > 600) {
+                this.item.y = 50;
+                this.item.x = Phaser.Math.Between(50, 750); // Random x-position
+            }
+
+            // Check for overlap
+            if (Phaser.Geom.Intersects.RectangleToRectangle(this.player.getBounds(), this.item.getBounds())) {
+                console.log('Caught an item!');
+                this.item.y = 50;
+                this.item.x = Phaser.Math.Between(50, 750);
+                this.score += 10;
+                this.scoreText.setText('Score: ' + this.score);
+            }
+        }
+    </script>
+</body>
+</html>
