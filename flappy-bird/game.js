@@ -97,7 +97,7 @@ const bg = {
 const pipe = {
   top: { sprite: new Image() },
   bot: { sprite: new Image() },
-  gap: 100,
+  gap: 95,
   moved: true,
   pipes: [],
   draw: function () {
@@ -370,8 +370,10 @@ SFX.die.src = "sfx/die.wav";
 
 function handleCharacterSelection(e) {
   const rect = scrn.getBoundingClientRect();
-  const clickX = e.clientX - rect.left;
-  const clickY = e.clientY - rect.top;
+  const scaleX = scrn.width / rect.width;
+  const scaleY = scrn.height / rect.height;
+  const clickX = (e.clientX - rect.left) * scaleX;
+  const clickY = (e.clientY - rect.top) * scaleY;
   
   const charY = 150;
   const charSpacing = 90;

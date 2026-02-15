@@ -1,9 +1,21 @@
-#canvas
-{
-    background-color:#30c0df;
-    border: 2px solid black;
+* {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #30c0df;
+}
+
+#canvas {
+    background-color: #30c0df;
     display: block;
-    margin: auto;
-    padding: auto;
-    
+    max-width: 100%;
+    max-height: 100%;
 }

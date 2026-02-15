@@ -9,7 +9,44 @@
     <link href="https://fonts.googleapis.com/css?family=Squada+One&display=swap" rel="stylesheet">
 </head>
 <body>
-    <canvas id="canvas" width="276" height="414"></canvas>
+    <canvas id="canvas"></canvas>
+    <script>
+        // Make canvas fill the screen while maintaining aspect ratio and scaling
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const originalWidth = 276;
+        const originalHeight = 414;
+        const aspectRatio = originalWidth / originalHeight;
+        
+        function resizeCanvas() {
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+            const windowRatio = windowWidth / windowHeight;
+            
+            let newWidth, newHeight;
+            
+            if (windowRatio > aspectRatio) {
+                // Window is wider - fit to height
+                newHeight = windowHeight;
+                newWidth = windowHeight * aspectRatio;
+            } else {
+                // Window is taller - fit to width
+                newWidth = windowWidth;
+                newHeight = windowWidth / aspectRatio;
+            }
+            
+            // Set canvas display size
+            canvas.style.width = newWidth + 'px';
+            canvas.style.height = newHeight + 'px';
+            
+            // Set canvas internal size (keep original for game logic)
+            canvas.width = originalWidth;
+            canvas.height = originalHeight;
+        }
+        
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+    </script>
     <script src="game.js"></script>
 </body>
 </html>
