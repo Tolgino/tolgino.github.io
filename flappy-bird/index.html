@@ -11,6 +11,15 @@
 <body>
     <canvas id="canvas"></canvas>
     <script>
+        // Prevent all scrolling and zooming
+        document.addEventListener('touchmove', function(e) {
+            e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('gesturestart', function(e) {
+            e.preventDefault();
+        });
+        
         // Make canvas fill the screen while maintaining aspect ratio and scaling
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');

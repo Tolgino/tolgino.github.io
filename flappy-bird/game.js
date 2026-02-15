@@ -29,7 +29,8 @@ function handleGameInput(e) {
 }
 
 scrn.addEventListener("click", handleGameInput);
-scrn.addEventListener("touchstart", handleGameInput);
+scrn.addEventListener("touchstart", handleGameInput, { passive: false });
+scrn.addEventListener("touchend", function(e) { e.preventDefault(); }, { passive: false });
 
 scrn.onkeydown = function keyDown(e) {
   if (e.keyCode == 32 || e.keyCode == 87 || e.keyCode == 38) {
@@ -379,8 +380,17 @@ function handleCharacterSelection(e) {
   const scaleY = scrn.height / rect.height;
   
   // Handle both mouse and touch events
-  const clientX = e.clientX || (e.touches && e.touches[0] ? e.touches[0].clientX : 0);
-  const clientY = e.clientY || (e.touches && e.touches[0] ? e.touches[0].clientY : 0);
+  let clientX, clientY;
+  if (e.touches && e.touches.length > 0) {
+    clientX = e.touches[0].clientX;
+    clientY = e.touches[0].clientY;
+  } else if (e.changedTouches && e.changedTouches.length > 0) {
+    clientX = e.changedTouches[0].clientX;
+    clientY = e.changedTouches[0].clientY;
+  } else {
+    clientX = e.clientX || 0;
+    clientY = e.clientY || 0;
+  }
   
   const clickX = (clientX - rect.left) * scaleX;
   const clickY = (clientY - rect.top) * scaleY;
@@ -391,8 +401,8 @@ function handleCharacterSelection(e) {
   const boxWidth = 180;
   const boxHeight = 70;
   
-  // Check which character was clicked
-  for (let i = 0; i < 3; i++) {
+  // Check which character was clicked (only 2 characters: Tolga and Pelinsu)
+  for (let i = 0; i < 2; i++) {
     const y = charY + i * charSpacing - 10;
     
     if (clickX >= boxX && clickX <= boxX + boxWidth &&
