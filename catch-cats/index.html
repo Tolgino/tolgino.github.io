@@ -97,6 +97,20 @@
             background-position: center;
         }
 
+        .powerup {
+            background-image: none;
+            background: radial-gradient(circle at 35% 35%, #ffffff, #ff3b30 40%, #b30000 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(255, 59, 48, 0.8);
+        }
+
+        .catrain {
+            background-image: none;
+            background: radial-gradient(circle at 35% 35%, #ffffff, #34c759 40%, #1f7a36 70%);
+            border-radius: 50%;
+            box-shadow: 0 0 12px rgba(52, 199, 89, 0.8);
+        }
+
         .tolga {
             background-image: url('tolga.png');
         }
@@ -121,6 +135,48 @@
             background-repeat: no-repeat;
             background-position: center;
             z-index: 50;
+        }
+
+        .powerup-indicator {
+            position: absolute;
+            padding: 6px 10px;
+            background: rgba(255, 59, 48, 0.85);
+            color: white;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 6px;
+            transform: translateX(-50%);
+            display: none;
+            z-index: 120;
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .catrain-banner {
+            position: absolute;
+            top: 90px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 18px;
+            background: rgba(52, 199, 89, 0.9);
+            color: white;
+            font-weight: bold;
+            font-size: 22px;
+            border-radius: 8px;
+            display: none;
+            z-index: 130;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .laser-beam {
+            position: absolute;
+            height: 4px;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0), #ff3b30, rgba(255, 255, 255, 0));
+            box-shadow: 0 0 10px rgba(255, 59, 48, 0.9);
+            transform-origin: left center;
+            z-index: 110;
+            pointer-events: none;
         }
 
         .game-over-screen {
@@ -224,6 +280,17 @@
                 font-size: 17px;
                 padding: 5px 10px;
             }
+
+            .powerup-indicator {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+
+            .catrain-banner {
+                font-size: 16px;
+                padding: 8px 12px;
+                top: 70px;
+            }
         }
 
         @media (hover: hover) and (pointer: fine) {
@@ -241,6 +308,8 @@
             <div class="best-score">Best: <span id="bestScore">0</span></div>
         </div>
         <div class="bucket" id="bucket"></div>
+        <div class="powerup-indicator" id="powerupIndicator">Laser: 0s</div>
+        <div class="catrain-banner" id="catRainBanner">Cat Rain</div>
         <div class="game-over-screen" id="gameOverScreen">
             <div class="game-over-content">
                 <h1>Game Over!</h1>
@@ -287,10 +356,18 @@
         const finalBestScoreDisplay = document.getElementById('finalBestScore');
         const gameOverScreen = document.getElementById('gameOverScreen');
         const finalScoreDisplay = document.getElementById('finalScore');
+        const powerupIndicator = document.getElementById('powerupIndicator');
+        const catRainBanner = document.getElementById('catRainBanner');
 
         let score = 0;
         let gameRunning = true;
         let bestScore = 0;
+        let laserActive = false;
+        let laserTimeLeft = 0;
+        let laserTimerInterval = null;
+        let laserFireInterval = null;
+        const LASER_DURATION = 5;
+        const LASER_FIRE_RATE_MS = 200;
 
         // Get actual game dimensions from container
         let gameWidth = gameContainer.offsetWidth;
@@ -325,7 +402,7 @@
             constructor(type) {
                 this.id = itemId++;
                 this.type = type;
-                const itemSize = (type === 'bikbik' || type === 'sutlac') ? gameWidth * 0.15 : gameWidth * 0.13;
+                const itemSize = (type === 'bikbik' || type === 'sutlac') ? gameWidth * 0.15 : ((type === 'powerup' || type === 'catrain') ? gameWidth * 0.1 : gameWidth * 0.13);
                 this.itemSize = itemSize;
                 this.x = Math.random() * (gameWidth - itemSize);
                 this.y = -itemSize;
@@ -383,6 +460,7 @@
             bucket.style.width = bucketWidth + 'px';
             bucket.style.height = bucketHeight + 'px';
             bucket.style.left = bucketX + 'px';
+            updatePowerupIndicatorPosition();
         }
 
         // Set bucket dimensions
@@ -397,6 +475,7 @@
                 bucketX = clampBucketX(bucketX + bucketSpeed);
             }
             bucket.style.left = bucketX + 'px';
+            updatePowerupIndicatorPosition();
         }
 
         // Mouse controls for desktop
@@ -407,6 +486,7 @@
                 const nextX = e.clientX - rect.left - bucketWidth / 2;
                 bucketX = clampBucketX(nextX);
                 bucket.style.left = bucketX + 'px';
+                updatePowerupIndicatorPosition();
             });
         }
 
@@ -454,7 +534,8 @@
             if (!gameRunning) return;
             
             const itemTypes = ['tolga', 'pelinsu', 'bikbik', 'sutlac'];
-            const randomType = itemTypes[Math.floor(Math.random() * itemTypes.length)];
+            const roll = Math.random();
+            const randomType = roll < 0.03 ? 'powerup' : (roll < 0.06 ? 'catrain' : itemTypes[Math.floor(Math.random() * itemTypes.length)]);
             const newItem = new FallingItem(randomType);
             fallingItems.push(newItem);
         }
@@ -478,16 +559,40 @@
                 const item = fallingItems[i];
                 item.update();
 
+                if (laserActive && (item.type === 'tolga' || item.type === 'pelinsu')) {
+                    const itemCenterX = item.x + item.itemSize / 2;
+                    const inBucketRange = itemCenterX >= bucketX && itemCenterX <= bucketX + bucketWidth;
+                    if (inBucketRange) {
+                        item.remove();
+                        fallingItems.splice(i, 1);
+                        continue;
+                    }
+                }
+
                 // Check collision
                 if (item.checkCollision(bucketX)) {
                     if (item.type === 'tolga' || item.type === 'pelinsu') {
-                        endGame();
-                        item.remove();
-                        fallingItems.splice(i, 1);
+                        if (laserActive) {
+                            createLaserBeam(item.x + item.itemSize / 2, item.y + item.itemSize / 2);
+                            item.remove();
+                            fallingItems.splice(i, 1);
+                        } else {
+                            endGame();
+                            item.remove();
+                            fallingItems.splice(i, 1);
+                        }
                     } else if (item.type === 'bikbik' || item.type === 'sutlac') {
                         score += 5;
                         score = Math.max(0, score);
                         scoreDisplay.textContent = score;
+                        item.remove();
+                        fallingItems.splice(i, 1);
+                    } else if (item.type === 'powerup') {
+                        activateLaserPowerup();
+                        item.remove();
+                        fallingItems.splice(i, 1);
+                    } else if (item.type === 'catrain') {
+                        triggerCatRain();
                         item.remove();
                         fallingItems.splice(i, 1);
                     }
@@ -506,6 +611,8 @@
             clearInterval(spawnInterval);
             fallingItems.forEach(item => item.remove());
             finalScoreDisplay.textContent = score;
+            clearInterval(laserTimerInterval);
+            clearInterval(laserFireInterval);
             try {
                 bestScore = Math.max(score, bestScore);
                 localStorage.setItem('catchCatsBest', bestScore);
@@ -515,6 +622,100 @@
                 finalBestScoreDisplay.textContent = bestScore;
             }
             gameOverScreen.classList.add('show');
+        }
+
+        function updatePowerupIndicatorPosition() {
+            if (!powerupIndicator) return;
+            const bucketCenterX = bucketX + bucketWidth / 2;
+            powerupIndicator.style.left = bucketCenterX + 'px';
+            powerupIndicator.style.bottom = (bucketHeight + 28) + 'px';
+        }
+
+        function updatePowerupIndicatorText() {
+            powerupIndicator.textContent = `Laser: ${laserTimeLeft}s`;
+        }
+
+        function activateLaserPowerup() {
+            laserTimeLeft += LASER_DURATION;
+            laserActive = true;
+            powerupIndicator.style.display = 'block';
+            updatePowerupIndicatorText();
+
+            if (laserTimerInterval) return;
+
+            laserTimerInterval = setInterval(() => {
+                if (!gameRunning) return;
+                laserTimeLeft = Math.max(0, laserTimeLeft - 1);
+                updatePowerupIndicatorText();
+                if (laserTimeLeft <= 0) {
+                    laserActive = false;
+                    powerupIndicator.style.display = 'none';
+                    clearInterval(laserTimerInterval);
+                    laserTimerInterval = null;
+                    clearInterval(laserFireInterval);
+                    laserFireInterval = null;
+                }
+            }, 1000);
+
+            if (!laserFireInterval) {
+                laserFireInterval = setInterval(() => {
+                    if (!gameRunning || !laserActive) return;
+                    fireLaser();
+                }, LASER_FIRE_RATE_MS);
+            }
+        }
+
+        function fireLaser() {
+            createLaserBeam();
+            for (let i = fallingItems.length - 1; i >= 0; i--) {
+                const item = fallingItems[i];
+                if (item.type !== 'tolga' && item.type !== 'pelinsu') continue;
+                const itemCenterX = item.x + item.itemSize / 2;
+                const inBucketRange = itemCenterX >= bucketX && itemCenterX <= bucketX + bucketWidth;
+                if (inBucketRange) {
+                    item.remove();
+                    fallingItems.splice(i, 1);
+                }
+            }
+        }
+
+        function triggerCatRain() {
+            const rainCount = 10;
+            for (let i = 0; i < rainCount; i++) {
+                const type = Math.random() < 0.5 ? 'bikbik' : 'sutlac';
+                const item = new FallingItem(type);
+                item.x = Math.random() * (gameWidth - item.itemSize);
+                item.y = -Math.random() * (gameHeight * 0.6 + item.itemSize);
+                item.update();
+                fallingItems.push(item);
+            }
+
+            catRainBanner.style.display = 'block';
+            clearTimeout(catRainBanner._hideTimer);
+            catRainBanner._hideTimer = setTimeout(() => {
+                catRainBanner.style.display = 'none';
+            }, 900);
+        }
+
+        function createLaserBeam() {
+            const beam = document.createElement('div');
+            beam.className = 'laser-beam';
+
+            const bucketY = gameHeight - bucketHeight - 10;
+            const originX = bucketX + bucketWidth / 2;
+            const originY = bucketY + bucketHeight * 0.3;
+            const distance = Math.max(10, originY);
+            const angle = -90;
+
+            beam.style.width = distance + 'px';
+            beam.style.left = originX + 'px';
+            beam.style.top = originY + 'px';
+            beam.style.transform = `rotate(${angle}deg)`;
+
+            gameContainer.appendChild(beam);
+            setTimeout(() => {
+                beam.remove();
+            }, 120);
         }
 
         // Start game
