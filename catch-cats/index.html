@@ -85,9 +85,9 @@
             color: #4CAF50;
         }
 
-        .timer {
+        .best-score {
             font-size: 24px;
-            color: #FF9800;
+            color: #FFD700;
         }
 
         .falling-item {
@@ -199,7 +199,7 @@
                 font-size: 16px;
             }
 
-            .timer {
+            .best-score {
                 font-size: 16px;
             }
 
@@ -238,7 +238,7 @@
     <div class="game-container" id="gameContainer">
         <div class="ui-panel">
             <div class="score">Score: <span id="score">0</span></div>
-            <div class="timer">Time: <span id="timer">60</span>s</div>
+            <div class="best-score">Best: <span id="bestScore">0</span></div>
         </div>
         <div class="bucket" id="bucket"></div>
         <div class="game-over-screen" id="gameOverScreen">
@@ -246,6 +246,8 @@
                 <h1>Game Over!</h1>
                 <p>Final Score:</p>
                 <div class="final-score"><span id="finalScore">0</span></div>
+                <p>Best Score:</p>
+                <div class="final-score"><span id="finalBestScore">0</span></div>
                 <button class="restart-btn" onclick="location.reload()">Play Again</button>
             </div>
         </div>
@@ -281,13 +283,14 @@
         const gameContainer = document.getElementById('gameContainer');
         const bucket = document.getElementById('bucket');
         const scoreDisplay = document.getElementById('score');
-        const timerDisplay = document.getElementById('timer');
+        const bestScoreDisplay = document.getElementById('bestScore');
+        const finalBestScoreDisplay = document.getElementById('finalBestScore');
         const gameOverScreen = document.getElementById('gameOverScreen');
         const finalScoreDisplay = document.getElementById('finalScore');
 
         let score = 0;
-        let timeLeft = 60;
         let gameRunning = true;
+        let bestScore = 0;
 
         // Get actual game dimensions from container
         let gameWidth = gameContainer.offsetWidth;
@@ -306,6 +309,16 @@
 
         const fallingItems = [];
         let itemId = 0;
+
+        function loadBestScore() {
+            try {
+                const savedBest = parseInt(localStorage.getItem('catchCatsBest'), 10);
+                bestScore = Number.isFinite(savedBest) ? savedBest : 0;
+            } catch (e) {
+                bestScore = 0;
+            }
+            bestScoreDisplay.textContent = bestScore;
+        }
 
         // Falling item class
         class FallingItem {
@@ -487,29 +500,25 @@
             requestAnimationFrame(gameLoop);
         }
 
-        // Timer countdown
-        let timerInterval = setInterval(() => {
-            if (gameRunning) {
-                timeLeft--;
-                timerDisplay.textContent = timeLeft;
-
-                if (timeLeft <= 0) {
-                    endGame();
-                }
-            }
-        }, 1000);
-
         // End game
         function endGame() {
             gameRunning = false;
             clearInterval(spawnInterval);
-            clearInterval(timerInterval);
             fallingItems.forEach(item => item.remove());
             finalScoreDisplay.textContent = score;
+            try {
+                bestScore = Math.max(score, bestScore);
+                localStorage.setItem('catchCatsBest', bestScore);
+                bestScoreDisplay.textContent = bestScore;
+                finalBestScoreDisplay.textContent = bestScore;
+            } catch (e) {
+                finalBestScoreDisplay.textContent = bestScore;
+            }
             gameOverScreen.classList.add('show');
         }
 
         // Start game
+        loadBestScore();
         gameLoop();
 
         function create() {
